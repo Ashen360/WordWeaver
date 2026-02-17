@@ -152,6 +152,25 @@ export function GameBoard({ playlist, difficulty, onReturnToMenu }) {
               />
             ))}
           </div>
+
+          {/* Hint pips */}
+          <div className="hint-row">
+            <span className="stat-label">Hints: </span>
+            {Array.from({ length: maxHints }).map((_, i) => (
+              <span
+                key={`hint-${i}`}
+                className={`hint-pip ${i < hintUses ? "used" : "available"}`}
+                style={{
+                  width: "10px",
+                  height: "10px",
+                  borderRadius: "50%",
+                  display: "inline-block",
+                  margin: "0 2px",
+                  backgroundColor: i < hintUses ? "#ccc" : "#ffd700", // Silver if used, Gold if available
+                }}
+              />
+            ))}
+          </div>
         </div>
       </div>
 
