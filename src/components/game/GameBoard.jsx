@@ -145,9 +145,10 @@ export function GameBoard({ playlist, difficulty, onReturnToMenu }) {
           </div>
           {/* Mistake pips */}
           <div className="mistake-row">
+            <span className="stat-label">Mistakes: </span>
             {Array.from({ length: maxMistakes }).map((_, i) => (
               <span
-                key={i}
+                key={`mistake-${i}`}
                 className={`mistake-pip ${i < mistakes ? "filled" : ""}`}
               />
             ))}
@@ -160,14 +161,6 @@ export function GameBoard({ playlist, difficulty, onReturnToMenu }) {
               <span
                 key={`hint-${i}`}
                 className={`hint-pip ${i < hintUses ? "used" : "available"}`}
-                style={{
-                  width: "10px",
-                  height: "10px",
-                  borderRadius: "50%",
-                  display: "inline-block",
-                  margin: "0 2px",
-                  backgroundColor: i < hintUses ? "#ccc" : "#ffd700", // Silver if used, Gold if available
-                }}
               />
             ))}
           </div>
@@ -203,11 +196,12 @@ export function GameBoard({ playlist, difficulty, onReturnToMenu }) {
         </Button>
         {hintsUnlocked && (
           <Button
-            variant="secondary"
+            vvariant="secondary"
             onClick={handleHint}
-            disabled={!hintsUnlocked || hintUses >= maxHints}
+            // Button is disabled if hints are gone OR if 0 words are selected
+            disabled={hintUses >= maxHints || selectedIds.length === 0}
           >
-            Hint ({maxHints - hintUses} left)
+            Hint
           </Button>
         )}
         <Button

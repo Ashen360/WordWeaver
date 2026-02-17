@@ -137,22 +137,33 @@ export function useGameState(playlist) {
   const handleHint = useCallback(() => {
     if (!hintsUnlocked) return;
 
+    // 1. Guard: Check if hints are exhausted
     if (hintUses >= maxHints) {
       setFeedback({ message: "No hints remaining.", type: "hint" });
       return;
     }
 
+    // 2. Guard: Check if the user has actually selected words
+    if (selectedIds.length === 0) {
+      setFeedback({ message: "Select 4 words to get a hint.", type: "info" });
+      return; // Exit early WITHOUT incrementing hintUses
+    }
+
+    // 3. Get the hint from logic
     const hint = gameLogic.getHint(selectedIds, wordList, hintUses, maxHints);
 
-    setGameState((prev) => ({
-      ...prev,
-      hintUses: prev.hintUses + 1,
-    }));
+    if (hint) {
+      // 4. Success: Only increment the counter if a hint was actually delivered
+      setGameState((prev) => ({
+        ...prev,
+        hintUses: prev.hintUses + 1,
+      }));
 
-    setFeedback({
-      message: hint || "Select some words first.",
-      type: "hint",
-    });
+      setFeedback({
+        message: hint,
+        type: "hint",
+      });
+    }
   }, [selectedIds, wordList, hintUses, maxHints, hintsUnlocked]);
 
   // Deselect all

@@ -78,13 +78,47 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
+  display: inline-block;
   background: var(--color-border);
-  border: 1.5px solid var(--color-border);
-  transition: background var(--transition-slow);
+  transition: all var(--transition-fast);
 }
 
 .mistake-pip.filled {
   background: var(--color-accent-red);
+}
+
+/* Hint Pips */
+.hint-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  letter-spacing: 0.1em;
+  margin-top: 4px; /* Slight spacing between rows */
+}
+
+.hint-pip {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  transition: all var(--transition-fast);
+  border: 1.5px solid transparent;
+}
+
+/* Hint is available (Gold/Yellow) */
+.hint-pip.available {
+  background-color: #ffd700;
+  box-shadow: 0 0 5px rgba(255, 215, 0, 0.4);
+  border-color: #e6c200;
+}
+
+/* Hint has been used (Grey/Muted) */
+.hint-pip.used {
+  background-color: var(--color-border);
+  opacity: 0.5;
+  box-shadow: none;
 }
 
 /* Controls */
@@ -100,7 +134,7 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .controls .btn {
     min-height: 48px;
   }
