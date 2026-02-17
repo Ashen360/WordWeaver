@@ -1,0 +1,61 @@
+/**
+ * CSS Variables
+ * Theme colors and design tokens - Dark mode (default)
+ */
+
+:root {
+  /* Primary Colors - Dark */
+  --color-bg: #0d0f14;
+  --color-bg-secondary: #161920;
+  --color-border: #2a2d36;
+  --color-text: #e8e6e1;
+  --color-text-muted: #9ca3af;
+  --color-text-dim: #6b7280;
+  
+  /* Accent Colors */
+  --color-accent-green: #4ade80;
+  --color-accent-blue: #60a5fa;
+  --color-accent-pink: #f472b6;
+  --color-accent-orange: #fb923c;
+  --color-accent-purple: #a78bfa;
+  --color-accent-red: #ef4444;
+  
+  /* Typography */
+  --font-family: 'DM Mono', 'Fira Code', 'Courier New', monospace;
+  
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 20px;
+  --spacing-2xl: 24px;
+  --spacing-3xl: 36px;
+  
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.18s ease;
+  --transition-slow: 0.3s ease;
+}
+
+/* Light Mode - Professional color scheme */
+body[data-theme="light"] {
+  --color-bg: #f8f9fa;
+  --color-bg-secondary: #ffffff;
+  --color-border: #dee2e6;
+  --color-text: #212529;
+  --color-text-muted: #6c757d;
+  --color-text-dim: #adb5bd;
+  
+  /* Muted accent colors for light mode */
+  --color-accent-green: #0d9488;    /* Teal */
+  --color-accent-blue: #0369a1;     /* Deep blue */
+  --color-accent-pink: #be185d;     /* Rose */
+  --color-accent-orange: #c2410c;   /* Burnt orange */
+  --color-accent-purple: #7c3aed;   /* Violet */
+  --color-accent-red: #dc2626;      /* Red */
+}

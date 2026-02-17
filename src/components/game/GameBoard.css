@@ -1,0 +1,180 @@
+/* Game Board Layout */
+.game-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: var(--spacing-xl) 0;
+}
+
+@media (max-width: 480px) {
+  .game-wrapper {
+    padding: var(--spacing-md) 0;
+    gap: 16px;
+  }
+}
+
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+@media (max-width: 480px) {
+  .game-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+  }
+}
+
+.game-title {
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+  margin: 0;
+}
+
+.game-stats {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Score Display */
+.score-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: var(--color-text-dim);
+}
+
+.score-value {
+  color: var(--color-accent-green);
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+/* Mistake Pips */
+.mistake-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  letter-spacing: 0.1em;
+}
+
+.mistake-pip {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-border);
+  border: 1.5px solid var(--color-border);
+  transition: background var(--transition-slow);
+}
+
+.mistake-pip.filled {
+  background: var(--color-accent-red);
+}
+
+/* Controls */
+.controls {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 480px) {
+  .controls {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .controls .btn {
+    min-height: 48px;
+  }
+}
+
+.btn-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Back to Menu */
+.back-to-menu {
+  background: none;
+  border: none;
+  color: var(--color-text-dim);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  font-family: inherit;
+  margin-top: -8px;
+}
+
+.back-to-menu:hover {
+  color: var(--color-text);
+}
+
+/* End Screen */
+.end-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+
+.end-title {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  margin: 0;
+}
+
+.end-title.won {
+  color: var(--color-accent-green);
+}
+
+.end-title.lost {
+  color: var(--color-accent-red);
+}
+
+.end-sub {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  letter-spacing: 0.1em;
+}
+
+.end-score {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--color-accent-green);
+  line-height: 1;
+}
+
+.end-score-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+  margin-top: 4px;
+}
+
+.end-solved-list {
+  width: 100%;
+  max-width: 400px;
+}

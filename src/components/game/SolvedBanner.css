@@ -1,0 +1,22 @@
+.solved-banner {
+  padding: 14px 20px;
+  border: 1.5px solid;
+  border-radius: var(--radius-md);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  animation: fadeSlideIn 0.4s ease;
+}
+
+.solved-category {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.solved-words {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  text-align: right;
+}

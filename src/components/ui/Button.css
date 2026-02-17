@@ -1,0 +1,38 @@
+.btn {
+  padding: 14px;
+  border: 1.5px solid;
+  border-radius: var(--radius-md);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-family: inherit;
+  transition: opacity var(--transition-fast);
+}
+
+.btn-primary {
+  flex: 2;
+  background: var(--color-accent-green);
+  border-color: var(--color-accent-green);
+  color: var(--color-bg);
+}
+
+.btn-secondary {
+  flex: 1;
+  background: var(--color-bg-secondary);
+  border-color: var(--color-border);
+  color: var(--color-text-muted);
+}
+
+.btn-danger {
+  flex: 1;
+  background: rgba(239, 68, 68, 0.13);
+  border-color: var(--color-accent-red);
+  color: var(--color-accent-red);
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
