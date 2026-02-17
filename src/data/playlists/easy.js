@@ -4,7 +4,7 @@
  */
 
 export const EASY_PLAYLIST = {
-  title: "Tech Basics",
+  title: "General Knowledge",
   groups: [
     {
       category: "Fruits",

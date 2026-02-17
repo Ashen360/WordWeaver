@@ -4,7 +4,7 @@
  */
 
 export const HARD_PLAYLIST = {
-  title: "Expert Mode",
+  title: "Full Geek Mode",
   groups: [
     {
       category: "Design Patterns",

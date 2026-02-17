@@ -4,7 +4,7 @@
  */
 
 export const MEDIUM_PLAYLIST = {
-  title: "Tricky Tech",
+  title: "College Level Tech Knowledge",
   groups: [
     {
       category: "Database Systems",

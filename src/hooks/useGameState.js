@@ -1,5 +1,5 @@
-import { useState, useCallback, useMemo } from 'react';
-import { gameLogic } from '../logic/gameLogic.js';
+import { useState, useCallback, useMemo } from "react";
+import { gameLogic } from "../logic/gameLogic.js";
 
 /**
  * Custom hook for managing game state
@@ -8,9 +8,9 @@ import { gameLogic } from '../logic/gameLogic.js';
  */
 export function useGameState(playlist) {
   const [gameState, setGameState] = useState(() =>
-    gameLogic.buildInitialState(playlist)
+    gameLogic.buildInitialState(playlist),
   );
-  const [feedback, setFeedback] = useState({ message: '', type: 'info' });
+  const [feedback, setFeedback] = useState({ message: "", type: "info" });
   const [shakeIds, setShakeIds] = useState([]);
 
   const {
@@ -21,27 +21,29 @@ export function useGameState(playlist) {
     mistakes,
     maxMistakes,
     hintsUnlocked,
+    hintUses,
+    maxHints,
   } = gameState;
 
   // Compute derived values
   const score = useMemo(
     () => gameLogic.computeScore(solvedCategories.length, mistakes),
-    [solvedCategories.length, mistakes]
+    [solvedCategories.length, mistakes],
   );
 
   const status = useMemo(() => {
     if (solvedCategories.length === selectedGroups?.length) {
-      return 'won';
+      return "won";
     } else if (mistakes >= maxMistakes) {
-      return 'lost';
+      return "lost";
     }
-    return 'playing';
+    return "playing";
   }, [solvedCategories.length, mistakes, maxMistakes, selectedGroups]);
 
   // Toggle a word's selection
   const handleToggle = useCallback(
     (id) => {
-      if (status !== 'playing') return;
+      if (status !== "playing") return;
       setGameState((s) => {
         const already = s.selectedIds.includes(id);
         const newSelected = already
@@ -49,15 +51,15 @@ export function useGameState(playlist) {
           : [...s.selectedIds, id];
         return { ...s, selectedIds: newSelected };
       });
-      setFeedback({ message: '', type: 'info' });
+      setFeedback({ message: "", type: "info" });
     },
-    [status]
+    [status],
   );
 
   // Submit guess
   const handleSubmit = useCallback(() => {
     if (selectedIds.length !== 4) {
-      setFeedback({ message: 'Select exactly 4 words.', type: 'info' });
+      setFeedback({ message: "Select exactly 4 words.", type: "info" });
       return;
     }
 
@@ -84,11 +86,11 @@ export function useGameState(playlist) {
 
       // Check if this was the last category
       if (newSolvedCategories.length === selectedGroups?.length) {
-        setFeedback({ message: 'Puzzle complete! 🎉', type: 'correct' });
+        setFeedback({ message: "Puzzle complete! 🎉", type: "correct" });
       } else {
         setFeedback({
           message: `✓ Correct! Category: "${result.category}"`,
-          type: 'correct',
+          type: "correct",
         });
       }
     } else {
@@ -108,12 +110,19 @@ export function useGameState(playlist) {
 
       // Check if this was the last mistake
       if (newMistakes >= maxMistakes) {
-        setFeedback({ message: 'Out of attempts!', type: 'wrong' });
+        setFeedback({ message: "Out of attempts!", type: "wrong" });
       } else {
-        setFeedback({ message: '✗ Not quite — try again.', type: 'wrong' });
+        setFeedback({ message: "✗ Not quite — try again.", type: "wrong" });
       }
     }
-  }, [selectedIds, wordList, solvedCategories, mistakes, maxMistakes, selectedGroups]);
+  }, [
+    selectedIds,
+    wordList,
+    solvedCategories,
+    mistakes,
+    maxMistakes,
+    selectedGroups,
+  ]);
 
   // Shuffle remaining words
   const handleShuffle = useCallback(() => {
@@ -126,20 +135,36 @@ export function useGameState(playlist) {
 
   // Show hint
   const handleHint = useCallback(() => {
-    const hint = gameLogic.getHint(selectedIds, wordList);
-    setFeedback({ message: hint || 'Select some words first.', type: 'hint' });
-  }, [selectedIds, wordList]);
+    if (!hintsUnlocked) return;
+
+    if (hintUses >= maxHints) {
+      setFeedback({ message: "No hints remaining.", type: "hint" });
+      return;
+    }
+
+    const hint = gameLogic.getHint(selectedIds, wordList, hintUses, maxHints);
+
+    setGameState((prev) => ({
+      ...prev,
+      hintUses: prev.hintUses + 1,
+    }));
+
+    setFeedback({
+      message: hint || "Select some words first.",
+      type: "hint",
+    });
+  }, [selectedIds, wordList, hintUses, maxHints, hintsUnlocked]);
 
   // Deselect all
   const handleDeselect = useCallback(() => {
     setGameState((s) => ({ ...s, selectedIds: [] }));
-    setFeedback({ message: '', type: 'info' });
+    setFeedback({ message: "", type: "info" });
   }, []);
 
   // Reset game
   const handleReset = useCallback(() => {
     setGameState(gameLogic.buildInitialState(playlist));
-    setFeedback({ message: '', type: 'info' });
+    setFeedback({ message: "", type: "info" });
     setShakeIds([]);
   }, [playlist]);
 

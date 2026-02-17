@@ -13,7 +13,7 @@ export const gameLogic = {
   buildWordList(playlist) {
     // Randomly select 4 groups from all available groups
     const selectedGroups = this.shuffle([...playlist.groups]).slice(0, 4);
-    
+
     const words = [];
     selectedGroups.forEach((group) => {
       group.words.forEach((word) => {
@@ -68,20 +68,28 @@ export const gameLogic = {
    * @param {Array<object>} wordList
    * @returns {string|null}
    */
-  getHint(selectedIds, wordList) {
-    if (selectedIds.length === 0) return "Select 4 words to get a hint.";
+  getHint(selectedIds, wordList, hintUses, maxHints) {
+    if (hintUses >= maxHints) {
+      return "No hints remaining.";
+    }
+
+    if (selectedIds.length === 0) {
+      return "Select 4 words to get a hint.";
+    }
 
     const selected = wordList.filter((w) => selectedIds.includes(w.id));
     const categoryCount = {};
+
     selected.forEach(({ category }) => {
       categoryCount[category] = (categoryCount[category] || 0) + 1;
     });
 
     const topCategory = Object.entries(categoryCount).sort(
-      ([, a], [, b]) => b - a
+      ([, a], [, b]) => b - a,
     )[0];
 
     if (!topCategory) return null;
+
     return `Hint: At least one word belongs to "${topCategory[0]}"`;
   },
 
@@ -91,7 +99,7 @@ export const gameLogic = {
   buildInitialState(playlist) {
     // Randomly select 4 groups from all available groups
     const selectedGroups = this.shuffle([...playlist.groups]).slice(0, 4);
-    
+
     const words = [];
     selectedGroups.forEach((group) => {
       group.words.forEach((word) => {
@@ -103,7 +111,7 @@ export const gameLogic = {
         });
       });
     });
-    
+
     return {
       wordList: this.shuffle(words),
       selectedGroups, // Track which 4 groups were selected for this game
@@ -115,6 +123,8 @@ export const gameLogic = {
       status: "playing", // 'playing' | 'won' | 'lost'
       lastGuessCorrect: null, // null | true | false
       shakeActive: false,
+      hintUses: 0,
+      maxHints: 3,
     };
   },
 

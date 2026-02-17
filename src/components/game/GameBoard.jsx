@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
-import { useGameState } from '../../hooks/useGameState.js';
-import { useSounds } from '../../utils/sounds.js';
-import { WordGrid } from './WordGrid.jsx';
-import { SolvedList } from './SolvedList.jsx';
-import { Feedback } from './Feedback.jsx';
-import { Button } from '../ui/Button.jsx';
-import './GameBoard.css';
+import React, { useEffect } from "react";
+import { useGameState } from "../../hooks/useGameState.js";
+import { useSounds } from "../../utils/sounds.js";
+import { WordGrid } from "./WordGrid.jsx";
+import { SolvedList } from "./SolvedList.jsx";
+import { Feedback } from "./Feedback.jsx";
+import { Button } from "../ui/Button.jsx";
+import "./GameBoard.css";
 
 /**
  * Main game screen, rendered while status === 'playing' or showing end state.
@@ -23,6 +23,8 @@ export function GameBoard({ playlist, difficulty, onReturnToMenu }) {
     mistakes,
     maxMistakes,
     hintsUnlocked,
+    hintUses,
+    maxHints,
     status,
     score,
     feedback,
@@ -35,17 +37,25 @@ export function GameBoard({ playlist, difficulty, onReturnToMenu }) {
     handleReset,
   } = useGameState(playlist);
 
-  const { playCorrect, playWrong, playWin, playLose, playShuffle, playButtonHover, playButtonClick } = useSounds();
+  const {
+    playCorrect,
+    playWrong,
+    playWin,
+    playLose,
+    playShuffle,
+    playButtonHover,
+    playButtonClick,
+  } = useSounds();
 
   // Track previous status to detect changes
   const prevStatusRef = React.useRef(null);
-  
+
   useEffect(() => {
     // Play sounds based on game status changes
     if (prevStatusRef.current !== status) {
-      if (status === 'won') {
+      if (status === "won") {
         playWin();
-      } else if (status === 'lost') {
+      } else if (status === "lost") {
         playLose();
       }
       prevStatusRef.current = status;
@@ -55,14 +65,14 @@ export function GameBoard({ playlist, difficulty, onReturnToMenu }) {
   // Track mistakes and solved count for sounds
   const prevMistakesRef = React.useRef(0);
   const prevSolvedRef = React.useRef(0);
-  
+
   useEffect(() => {
     // Play wrong sound when mistakes increase
     if (mistakes > prevMistakesRef.current && mistakes < maxMistakes) {
       playWrong();
     }
     prevMistakesRef.current = mistakes;
-    
+
     // Play correct sound when solved categories increase
     if (solvedCategories.length > prevSolvedRef.current) {
       playCorrect();
@@ -82,16 +92,16 @@ export function GameBoard({ playlist, difficulty, onReturnToMenu }) {
   };
 
   // Render: End Screen
-  if (status === 'won' || status === 'lost') {
+  if (status === "won" || status === "lost") {
     return (
       <div className="end-screen">
         <div>
           <p className={`end-title ${status}`}>
-            {status === 'won' ? 'Victory!' : 'Defeated'}
+            {status === "won" ? "Victory!" : "Defeated"}
           </p>
           <p className="end-sub">
-            {status === 'won'
-              ? 'All groups found!'
+            {status === "won"
+              ? "All groups found!"
               : `You ran out of attempts. ${
                   selectedGroups?.length - solvedCategories.length
                 } group(s) unsolved.`}
@@ -136,9 +146,9 @@ export function GameBoard({ playlist, difficulty, onReturnToMenu }) {
           {/* Mistake pips */}
           <div className="mistake-row">
             {Array.from({ length: maxMistakes }).map((_, i) => (
-              <span 
-                key={i} 
-                className={`mistake-pip ${i < mistakes ? 'filled' : ''}`} 
+              <span
+                key={i}
+                className={`mistake-pip ${i < mistakes ? "filled" : ""}`}
               />
             ))}
           </div>
@@ -153,13 +163,13 @@ export function GameBoard({ playlist, difficulty, onReturnToMenu }) {
         words={wordList}
         selectedIds={selectedIds}
         shakeIds={shakeIds}
-        disabled={status !== 'playing'}
+        disabled={status !== "playing"}
         onToggle={handleToggle}
       />
 
       {/* Feedback message */}
-      <Feedback 
-        message={feedback.message} 
+      <Feedback
+        message={feedback.message}
         type={feedback.type}
         fallback={`Select 4 words · ${selectedIds.length}/4 selected`}
       />
@@ -173,24 +183,31 @@ export function GameBoard({ playlist, difficulty, onReturnToMenu }) {
           Shuffle
         </Button>
         {hintsUnlocked && (
-          <Button variant="secondary" onClick={handleHint}>
-            Hint
+          <Button
+            variant="secondary"
+            onClick={handleHint}
+            disabled={!hintsUnlocked || hintUses >= maxHints}
+          >
+            Hint ({maxHints - hintUses} left)
           </Button>
         )}
         <Button
           variant="primary"
           onClick={handleSubmit}
           disabled={selectedIds.length !== 4}
-          className={selectedIds.length !== 4 ? 'btn-disabled' : ''}
+          className={selectedIds.length !== 4 ? "btn-disabled" : ""}
         >
           Submit
         </Button>
       </div>
 
       {/* Back to menu */}
-      <button 
-        className="back-to-menu" 
-        onClick={() => { playButtonClick(); onReturnToMenu(); }}
+      <button
+        className="back-to-menu"
+        onClick={() => {
+          playButtonClick();
+          onReturnToMenu();
+        }}
         onMouseEnter={playButtonHover}
       >
         ← Back to Menu
